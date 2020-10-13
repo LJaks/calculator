@@ -1,45 +1,46 @@
-import React from "react";
-import "./App.css";
+import React, {useEffect, useState} from "react";
 
-class App extends React.Component {
-  constructor() {
-    super();
-    this.state = {
-      count: 0,
-      input: ""
-    }
-    this.sum = this.sum.bind(this)
-    this.reset = this.reset.bind(this)
-    this.handleChange = this.handleChange.bind(this)
-  }
-  reset(){
-    this.setState({
-        count: 0
-      })
-  }
-  sum() {
-    this.setState(prevState => {
-      return {
-        count: Math.floor(prevState.count + this.state.input)
-      }
-    })
-  }
-  handleChange(event) {
-    this.setState({
-          input: event.target.value
-    })
-  }
+function App() {
+    const [ currSum, setCurrSum ] = useState(0);
+    const [ clear, setClear ] = useState(false);
 
-  render() {
-    return (
-      <div className="App">
-        <h1>{this.state.count}</h1>
-        <input value={this.state.input} onChange={this.handleChange}></input>
-        <button onClick={this.sum}>Sum!</button>
-        <button onClick={this.reset}>Reset</button>
-      </div>
-    );
-  }
+    const Add = (e) => {
+        e.preventDefault();
+        if (clear) setClear(false);
+        let currNum = document.querySelector("#num").value;
+        if (currNum === "") return;
+        let sum = currSum + parseInt(currNum);
+        setCurrSum(sum);
+        document.querySelector("#num").value="";
+    };
+    const Clear = (e) => {
+        e.preventDefault();
+        console.log('sum:', currSum);
+        document.querySelector('form').reset();
+        setClear(true);
+        setCurrSum(0);
+    };
+
+    useEffect(() => {
+        document.querySelector("#result").value = "";
+    },[]);
+    useEffect(() => {
+        if(clear)
+        document.querySelector("#result").value = "";
+    });
+
+        return(
+            <div className="app">
+                <div className="app-title">
+                    <h1>Simple Calculator</h1>
+                </div>
+                <form className="calc-wrapper">
+                    <input type="text" id="result" value={currSum} readOnly />
+                    <input type="text" id="num" placeholder="Enter a Number" />
+                    <button onClick={Add}>Add</button>
+                    <button onClick={Clear}>Clear</button>
+                </form>
+            </div>
+        )
 }
-
 export default App;
