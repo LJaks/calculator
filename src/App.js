@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from "react";
+import Buttons from "./Buttons";
+import Display from "./Display"
 
 function App() {
     const [ currSum, setCurrSum ] = useState(0);
@@ -29,16 +31,33 @@ function App() {
         document.querySelector("#result").value = "";
     });
 
+    const MathSigns = (e) => {
+        e.preventDefault();
+        let currNum = document.querySelector("#num").value;
+        let sum;
+        if (document.querySelector("#result").value === "") {
+            sum = currSum + parseInt(currNum);
+        }
+        else (sum = currSum - parseInt(currNum));
+        setCurrSum(sum);
+        document.querySelector("#num").value="";
+    }
+
         return(
             <div className="app">
                 <div className="app-title">
                     <h1>Simple Calculator</h1>
                 </div>
                 <form className="calc-wrapper">
-                    <input type="text" id="result" value={currSum} readOnly />
+                    {/* <input type="text" id="result" value={currSum} readOnly />
                     <input type="text" id="num" placeholder="Enter a Number" />
                     <button onClick={Add}>Add</button>
-                    <button onClick={Clear}>Clear</button>
+                    <button onClick={Clear}>Clear</button> */}
+                
+                <Display value={currSum} />
+                <Buttons onClickFunction={Add} keyValue="+" />
+                <Buttons onClickFunction={Clear} keyValue="C" />
+                <Buttons onClickFunction={MathSigns} id="minus" keyValue="-" />
                 </form>
             </div>
         )
