@@ -1,86 +1,173 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Buttons from "./Buttons";
 import Display from "./Display";
 
 function App() {
-  const [currSum, setCurrSum] = useState(0);
-  const [clear, setClear] = useState(false);
+  const [value, setValue] = useState("0");
+  const [memory, setMemory] = useState(null);
+  const [operator, setOperator] = useState(null);
 
-  const Add = (e) => {
-    e.preventDefault();
-    if (clear) setClear(false);
-    let currNum = document.querySelector("#num").value;
-    if (currNum === "") return;
-    let sum = currSum + parseInt(currNum);
-    setCurrSum(sum);
-    document.querySelector("#num").value = "";
-  };
-  const Clear = (e) => {
-    e.preventDefault();
-    console.log("sum:", currSum);
-    document.querySelector("form").reset();
-    setClear(true);
-    setCurrSum(0);
+  const handleClick = (keyValue) => () => {
+    const num = parseFloat(value);
+
+    if (keyValue === "AC") {
+      setValue("0");
+      setMemory(null);
+      setOperator(null);
+      return;
+    }
+    if (keyValue === "+/-") {
+      setValue((num * -1).toString());
+      setMemory(num);
+      return;
+    }
+    if (keyValue === "%") {
+      setValue(num / 100);
+      setMemory(num);
+      // setMemory(null);
+      // setOperator(null);
+      return;
+    }
+    if (keyValue === ",") {
+      if (value.includes(".")) return;
+      setValue(value + ".");
+      return;
+    }
+
+    if (keyValue === "=") {
+      if (!operator) return;
+      if (operator === "/") {
+        setValue((memory / num).toString());
+      } else if (operator === "x") {
+        setValue((memory * num).toString());
+      } else if (operator === "-") {
+        setValue((memory - num).toString());
+      } else if (operator === "+") {
+        setValue((memory + num).toString());
+      }
+      setMemory(null);
+      setOperator(null);
+      return;
+    }
+    if (keyValue === "/") {
+      if (operator === "+") {
+        setMemory(memory + num);
+      } else if (operator === "-") {
+        setMemory(memory - num);
+      } else if (operator === "x") {
+        setMemory(memory * num);
+      } else if (operator === "/") {
+        setMemory(memory / num);
+      } else {
+        setMemory(num);
+      }
+      setValue("0");
+      setOperator("/");
+      return;
+    }
+    if (keyValue === "x") {
+      if (operator === "+") {
+        setMemory(memory + num);
+      } else if (operator === "-") {
+        setMemory(memory - num);
+      } else if (operator === "x") {
+        setMemory(memory * num);
+      } else if (operator === "/") {
+        setMemory(memory / num);
+      } else {
+        setMemory(num);
+      }
+      setValue("0");
+      setOperator("x");
+      return;
+    }
+    if (keyValue === "-") {
+      if (operator === "+") {
+        setMemory(memory + num);
+      } else if (operator === "-") {
+        setMemory(memory - num);
+      } else if (operator === "x") {
+        setMemory(memory * num);
+      } else if (operator === "/") {
+        setMemory(memory / num);
+      } else {
+        setMemory(num);
+      }
+      setValue("0");
+      setOperator("-");
+      return;
+    }
+    if (keyValue === "+") {
+      if (operator === "+") {
+        setMemory(memory + num);
+      } else if (operator === "-") {
+        setMemory(memory - num);
+      } else if (operator === "x") {
+        setMemory(memory * num);
+      } else if (operator === "/") {
+        setMemory(memory / num);
+      } else {
+        setMemory(num);
+      }
+      setValue("0");
+      setOperator("+");
+      return;
+    }
+    if (value[value.length - 1] === ".") {
+      setValue(value + keyValue);
+    } else {
+      setValue(parseFloat(num + keyValue).toString());
+    }
   };
 
-  useEffect(() => {
-    document.querySelector("#result").value = "";
-  }, []);
-  useEffect(() => {
-    if (clear) document.querySelector("#result").value = "";
-  });
-
-  const MathSigns = (e) => {
-    e.preventDefault();
-    let currNum = document.querySelector("#num").value;
-    let sum;
-    if (document.querySelector("#result").value === "") {
-      sum = currSum + parseInt(currNum);
-    } else sum = currSum - parseInt(currNum);
-    setCurrSum(sum);
-    document.querySelector("#num").value = "";
-  };
+  // useEffect(() => {
+  //   document.querySelector("#result").value = "";
+  // }, []);
+  // useEffect( keyValue => {
+  //   if (keyValue === "AC") document.querySelector("#result").value = "";
+  // });
 
   return (
     <div className="app">
       <div className="app-title">
         <h1>Simple Calculator</h1>
       </div>
-      <form className="calc-wrapper">
-        {/* <input type="text" id="result" value={currSum} readOnly />
-                    <input type="text" id="num" placeholder="Enter a Number" />
-                    <button onClick={Add}>Add</button>
-                    <button onClick={Clear}>Clear</button> */}
-
-        <div className="display">
-          <Display value={currSum} />
-        </div>
+      <div className="calc-wrapper">
+        <Display
+          className="display"
+          displayValue={value}
+          addToDisplay={operator === null ? value : memory + operator}
+        />
         <div className="buttons">
-          <Buttons onClickFunction={Clear} keyValue="AC" />
-          <Buttons onClickFunction={0} keyValue="+/-" />
-          <Buttons onClickFunction={0} keyValue="%" />
-          <Buttons onClickFunction={0} keyValue="/" />
-
-          <Buttons onClickFunction={0} keyValue="7" />
-          <Buttons onClickFunction={0} keyValue="8" />
-          <Buttons onClickFunction={0} keyValue="9" />
-          <Buttons onClickFunction={0} keyValue="x" />
-
-          <Buttons onClickFunction={0} keyValue="4" />
-          <Buttons onClickFunction={0} keyValue="5" />
-          <Buttons onClickFunction={0} keyValue="6" />
-          <Buttons onClickFunction={MathSigns} keyValue="-" />
-
-          <Buttons onClickFunction={0} keyValue="1" />
-          <Buttons onClickFunction={0} keyValue="2" />
-          <Buttons onClickFunction={0} keyValue="3" />
-          <Buttons onClickFunction={Add} keyValue="+" />
-
-          <Buttons onClickFunction={0} keyValue="0" />
-          <Buttons onClickFunction={0} keyValue="," />
-          <Buttons onClickFunction={0} keyValue="=" />
+          <Buttons
+            onClickHandle={handleClick}
+            keyValue="AC"
+            type="first-line"
+          />
+          <Buttons
+            onClickHandle={handleClick}
+            keyValue="+/-"
+            type="first-line"
+          />
+          <Buttons onClickHandle={handleClick} keyValue="%" type="first-line" />
+          <Buttons onClickHandle={handleClick} keyValue="/" type="operator" />
+          <Buttons onClickHandle={handleClick} keyValue="7" />
+          <Buttons onClickHandle={handleClick} keyValue="8" />
+          <Buttons onClickHandle={handleClick} keyValue="9" />
+          <Buttons onClickHandle={handleClick} keyValue="x" type="operator" />
+          <Buttons onClickHandle={handleClick} keyValue="4" />
+          <Buttons onClickHandle={handleClick} keyValue="5" />
+          <Buttons onClickHandle={handleClick} keyValue="6" />
+          <Buttons onClickHandle={handleClick} keyValue="-" type="operator" />
+          <Buttons onClickHandle={handleClick} keyValue="1" />
+          <Buttons onClickHandle={handleClick} keyValue="2" />
+          <Buttons onClickHandle={handleClick} keyValue="3" />
+          <Buttons onClickHandle={handleClick} keyValue="+" type="operator" />
+          <Buttons onClickHandle={handleClick} keyValue="0" />
+          <Buttons onClickHandle={handleClick} keyValue="," />
+          <Buttons onClickHandle={handleClick} keyValue="=" type="operator" />
         </div>
-      </form>
+      </div>
     </div>
   );
 }

@@ -1,48 +1,47 @@
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Roboto", "Oxygen", "Ubuntu",
+    "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 .app {
   width: 280px;
   height: 500px;
-  background-color:black;
+  background-color: black;
   color: white;
   text-align: center;
   position: relative;
   margin: auto;
   border-radius: 20px;
 }
-h1{
+h1 {
   padding-top: 20px;
   font-size: 25px;
 }
 .calc-wrapper {
-  height:50px;
+  height: 50px;
   justify-content: space-between;
   padding: 0 20px;
 }
 .display {
   position: relative;
-  text-align: center;
-  color: white;
-}
-input {
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 100%;
+}
+#result,
+#num {
   background: black;
   border: none;
-  color: white;
-  font-size: 30px;
-  width: 100%;
+  color: gray;
+  font-size: 35px;
   text-align: right;
   outline: none;
+  margin-right: 5px;
 }
-.buttons{
+.buttons {
   display: grid;
   grid-gap: 10px;
   grid-template-rows: repeat(5, 50px);
@@ -52,7 +51,7 @@ input {
 
 button {
   color: white;
-  background-color:#333;
+  background-color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -63,13 +62,13 @@ button {
   height: 50px;
   border: black;
   cursor: pointer;
-  outline: none; 
+  outline: none;
 }
 button.right {
   background-color: orange;
 }
 button.first-line {
-  background-color:grey;
+  background-color: grey;
 }
 button.zero {
   position: relative;
@@ -79,7 +78,7 @@ button.zero {
   border-radius: 50px;
   padding-left: 15px;
 }
-button:active{
+button:active {
   transition: 0.1s linear;
   box-shadow: inset 1px 1px 50px rgb(228, 226, 226);
 }

@@ -3,9 +3,16 @@ import React from "react";
 function Buttons(props) {
   return (
     <button
-      onClick={props.onClickFunction}
+      onClick={props.onClickHandle(props.keyValue)}
       className={
-        props.keyValue === "0" ? "zero" : ((props.keyValue === "/" || props.keyValue === "x" || props.keyValue === "-" || props.keyValue === "+" || props.keyValue === "=" ) ? "right": (props.keyValue === "AC" || props.keyValue === "+/-" || props.keyValue === "%" ? "first-line" : ""))}
+        props.keyValue === "0"
+          ? "zero"
+          : props.type === "operator"
+          ? "right"
+          : props.type === "first-line"
+          ? "first-line"
+          : ""
+      }
     >
       {props.keyValue}
     </button>
