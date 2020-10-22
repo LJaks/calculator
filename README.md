@@ -9,6 +9,9 @@
 
 # ![Calculator](./public/Clc.jpg)
 
+## Website 
+Here is a working [Calculator](https://laura.jaks.info/calculator/).
+
 ## Built with 
 
 - [Create React App](https://github.com/facebook/create-react-app) - simplified tool when building React apps.
