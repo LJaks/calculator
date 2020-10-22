@@ -24,8 +24,6 @@ function App() {
     if (keyValue === "%") {
       setValue(num / 100);
       setMemory(num);
-      // setMemory(null);
-      // setOperator(null);
       return;
     }
     if (keyValue === ",") {
@@ -119,13 +117,6 @@ function App() {
       setValue(parseFloat(num + keyValue).toString());
     }
   };
-
-  // useEffect(() => {
-  //   document.querySelector("#result").value = "";
-  // }, []);
-  // useEffect( keyValue => {
-  //   if (keyValue === "AC") document.querySelector("#result").value = "";
-  // });
 
   return (
     <div className="app">
